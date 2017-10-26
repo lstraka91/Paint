@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JScrollPane;
 
 public class MainFrame extends JFrame {
 	
@@ -20,6 +21,8 @@ public class MainFrame extends JFrame {
 	private JMenuItem menuSave;
 	private JMenuItem menuLoad;
 	private JMenuItem menuExit;
+	private JScrollPane scrollPane;
+	private JPanel drawPanel;
 	
 	public MainFrame() {
 		super("Paint");
@@ -74,6 +77,12 @@ public class MainFrame extends JFrame {
 
 		menuExit = new JMenuItem("Exit");
 		mnFiles.add(menuExit);
+		
+		scrollPane = new JScrollPane();
+		contentPane.add(scrollPane, BorderLayout.CENTER);
+		
+		drawPanel = new DrawPanel();
+		scrollPane.setViewportView(drawPanel);
 
 	}
 
