@@ -3,6 +3,8 @@ package sk.tsystems.paint;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -12,6 +14,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import sk.tsystems.utils.CustomMenuListener;
+
 import javax.swing.JScrollPane;
 
 public class MainFrame extends JFrame {
@@ -23,6 +28,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem menuExit;
 	private JScrollPane scrollPane;
 	private JPanel drawPanel;
+
 	
 	public MainFrame() {
 		super("Paint");
@@ -63,16 +69,25 @@ public class MainFrame extends JFrame {
 		navigation_panel.add(menu_panel, BorderLayout.CENTER);
 		menu_panel.setLayout(new BorderLayout(0, 0));
 
+		
+
 		JMenuBar menuBar = new JMenuBar();
 		menu_panel.add(menuBar, BorderLayout.WEST);
 
 		JMenu mnFiles = new JMenu("File");
 		menuBar.add(mnFiles);
 
+		CustomMenuListener menuListener=new CustomMenuListener(this);
+		
 		menuSave = new JMenuItem("Save");
+		menuSave.addActionListener(menuListener);
 		mnFiles.add(menuSave);
 
+
 		menuLoad = new JMenuItem("Load");
+	
+		menuLoad.addActionListener(menuListener);
+		
 		mnFiles.add(menuLoad);
 
 		menuExit = new JMenuItem("Exit");
@@ -94,4 +109,27 @@ public class MainFrame extends JFrame {
 		});
 	}
 
+	public void openFile() {
+		JFileChooser chooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+		        "JPG & GIF Images", "jpg", "gif");
+	    chooser.setFileFilter(filter);
+	    int returnVal = chooser.showOpenDialog(this);
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	       System.out.println("You chose to open this file: " +
+	            chooser.getSelectedFile().getName());
+	    }
+	}
+
+	public void saveFile() {
+		JFileChooser chooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+		        "JPG & GIF Images", "jpg", "gif");
+	    chooser.setFileFilter(filter);
+	    int returnVal = chooser.showOpenDialog(this);
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	       System.out.println("You chose to open this file: " +
+	            chooser.getSelectedFile().getName());
+	    }
+	}
 }
