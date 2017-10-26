@@ -148,9 +148,20 @@ public class PaintPanel extends JPanel {
 								chosenColor);
 					}
 				} else {
-
+					if (selectRectangle != null) {
+						int dx = (int) (e.getX() - selectedShape.getX());
+						int dy = (int) (e.getY() - selectedShape.getY());
+						selectRectangle.setRect(selectRectangle.getX() + dx, selectRectangle.getY() + dy,
+								selectRectangle.getWidth(), selectRectangle.getHeight());
+						moveShapeTo(e.getPoint());
+						repaint();
+					}
 				}
 				repaint();
+			}
+
+			private void moveShapeTo(Point point) {
+
 			}
 		});
 	}
@@ -230,5 +241,17 @@ public class PaintPanel extends JPanel {
 		addToShapesList(new RectangleShape(15, 20, 350, 49, Color.blue));
 		addToShapesList(new RectangleShape(66, 180, 350, 49, Color.pink));
 		addToShapesList(new EllipseShape(88, 380, 30, 49, Color.green));
+	}
+
+	public void setEditMode(boolean isEditMode) {
+		this.isEditMode = isEditMode;
+	}
+
+	public void setChoosenShape(Shape choosenShape) {
+		this.choosenShape = choosenShape;
+	}
+
+	public void setChoosenColor(Color choosenColor) {
+		this.chosenColor = choosenColor;
 	}
 }
