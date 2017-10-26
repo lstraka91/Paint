@@ -15,7 +15,14 @@ public class CustomMenuListener implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		parentWindow.openFile();	}
+		System.out.println("Popup menu item ["
+	            + e.getActionCommand() + "] was pressed.");
+		if(e.getActionCommand().equalsIgnoreCase("Load")){
+			parentWindow.openFile();
+		}else if(e.getActionCommand().equalsIgnoreCase("Save")){
+			parentWindow.openFile();
+		}
+	}
+			
 
 }
