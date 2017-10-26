@@ -395,7 +395,7 @@ public class MainFrame extends JFrame {
 		scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.SOUTH);
 		
-		paintPanel = new DrawPanel();
+		paintPanel = new PaintPanel();
 		scrollPane.setViewportView(paintPanel);
 
 	}
