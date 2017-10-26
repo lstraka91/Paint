@@ -167,6 +167,8 @@ public class MainFrame extends JFrame {
 		JPanel panel_5 = new JPanel();
 		home_tab.add(panel_5);
 		
+		shape_group = new ButtonGroup();
+		
 		JRadioButton shape_radioButton_20 = new JRadioButton("");
 		shape_radioButton_20.setBackground(SystemColor.menu);
 		panel_5.add(shape_radioButton_20);
@@ -386,8 +388,6 @@ public class MainFrame extends JFrame {
 		
 		JLabel edit_colors_lbl = new JLabel("Edit colors");
 		panel_3.add(edit_colors_lbl);
-		
-		shape_group = new ButtonGroup();
 		
 		JPanel view_tab = new JPanel();
 		tabbed_panel.addTab("View", null, view_tab, null);
