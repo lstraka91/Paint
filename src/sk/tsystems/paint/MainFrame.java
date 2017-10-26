@@ -10,7 +10,7 @@ public class MainFrame extends JFrame {
 		super("Paint");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		// setUndecorated(true);
+		// setUndecorated(true);.
 		setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		 getContentPane().add(new MainPanel());
 	}
