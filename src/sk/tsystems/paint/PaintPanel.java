@@ -36,6 +36,12 @@ public class PaintPanel extends JPanel {
 				System.out.println("released " + endPoint);
 				double width = endPoint.getX() - initialPoint.getX();
 				double height = endPoint.getY() - initialPoint.getY();
+
+				if (width < 0)
+					width *= -1;
+				if (height < 0)
+					height *= -1;
+
 				currentShape = new RectangleShape(initialPoint.getX(), initialPoint.getY(), width, height, chosenColor);
 				addToShapesList(currentShape);
 				repaint();
