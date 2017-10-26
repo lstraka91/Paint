@@ -12,6 +12,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import sk.tsystems.utils.CustomMenuListener;
+
 import javax.swing.JScrollPane;
 import java.awt.CardLayout;
 import javax.swing.JLayeredPane;
@@ -90,11 +93,14 @@ public class MainFrame extends JFrame {
 
 		JMenu fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
-
+		
+		CustomMenuListener menuListener=new CustomMenuListener(this);
 		menuSave = new JMenuItem("Save");
+		menuSave.addActionListener(menuListener);
 		fileMenu.add(menuSave);
 
 		menuLoad = new JMenuItem("Load");
+		menuLoad.addActionListener(menuListener);
 		fileMenu.add(menuLoad);
 
 		menuExit = new JMenuItem("Exit");
@@ -393,7 +399,7 @@ public class MainFrame extends JFrame {
 		tabbed_panel.addTab("View", null, view_tab, null);
 		
 		scrollPane = new JScrollPane();
-		contentPane.add(scrollPane, BorderLayout.SOUTH);
+		contentPane.add(scrollPane, BorderLayout.CENTER);
 		
 		paintPanel = new PaintPanel();
 		scrollPane.setViewportView(paintPanel);
@@ -406,5 +412,29 @@ public class MainFrame extends JFrame {
 				new MainFrame().setVisible(true);
 			}
 		});
+	}
+	
+	public void openFile() {
+		JFileChooser chooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+		        "JPG & GIF Images", "jpg", "gif");
+	    chooser.setFileFilter(filter);
+	    int returnVal = chooser.showOpenDialog(this);
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	       System.out.println("You chose to open this file: " +
+	            chooser.getSelectedFile().getName());
+	    }
+	}
+
+	public void saveFile() {
+		JFileChooser chooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+		        "JPG & GIF Images", "jpg", "gif");
+	    chooser.setFileFilter(filter);
+	    int returnVal = chooser.showOpenDialog(this);
+	    if(returnVal == JFileChooser.APPROVE_OPTION) {
+	       System.out.println("You chose to open this file: " +
+	            chooser.getSelectedFile().getName());
+	    }
 	}
 }
