@@ -11,6 +11,10 @@ public abstract class Shape {
 	private double height;
 	private Color colorShape;
 
+	public Shape() {
+
+	}
+
 	public Shape(double x, double y, double width, double height, Color color) {
 		position = new Point2D.Double(x, y);
 		this.width = width;

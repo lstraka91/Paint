@@ -15,6 +15,9 @@ public class RectangleShape extends Shape {
 		shape = new Rectangle2D.Double(0, 0, width, height);
 	}
 
+	public RectangleShape() {
+	}
+
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
