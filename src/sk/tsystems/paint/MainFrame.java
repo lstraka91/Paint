@@ -50,6 +50,7 @@ public class MainFrame extends JFrame {
 	private JPanel paintPanel;
 	private ButtonGroup color_group;
 	private ButtonGroup shape_group;
+	private ButtonGroup color_type_group;
 	
 	public MainFrame() {
 		super("Paint");
@@ -202,11 +203,15 @@ public class MainFrame extends JFrame {
 		panel_3.add(panel_6);
 		panel_6.setLayout(new GridLayout(2, 1, 0, 0));
 		
+		color_type_group = new ButtonGroup();
+		
 		JRadioButton fill_rbtn = new JRadioButton("Fill color");
 		panel_6.add(fill_rbtn);
+		color_type_group.add(fill_rbtn);
 		
 		JRadioButton border_rbtn = new JRadioButton("Border color");
 		panel_6.add(border_rbtn);
+		color_type_group.add(border_rbtn);
 		
 		JPanel panel_4 = new JPanel();
 		panel_3.add(panel_4);
