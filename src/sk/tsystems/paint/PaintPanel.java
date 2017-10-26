@@ -8,16 +8,20 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 
+import sk.tsystems.paint.shapes.LineShape;
 import sk.tsystems.paint.shapes.RectangleShape;
+import sk.tsystems.paint.shapes.SquareShape;
 
 public class PaintPanel extends JPanel {
 
 	private Shape currentShape;
+	private Shape choosenShape;
 	private Color chosenColor;
 	private List<Shape> shapesList;
 	private Point initialPoint;
@@ -26,6 +30,7 @@ public class PaintPanel extends JPanel {
 	public PaintPanel() {
 		shapesList = new ArrayList<>();
 		chosenColor = Color.BLACK;
+		choosenShape = new LineShape();
 		//// current Shape change dynamically
 
 		addMouseListener(new MouseListener() {
@@ -42,7 +47,15 @@ public class PaintPanel extends JPanel {
 				if (height < 0)
 					height *= -1;
 
-				currentShape = new RectangleShape(initialPoint.getX(), initialPoint.getY(), width, height, chosenColor);
+				if (choosenShape instanceof LineShape) {
+					currentShape = new LineShape(initialPoint.getX(), initialPoint.getY(), e.getX(), e.getY(),
+							chosenColor);
+				} else {
+
+					currentShape = new SquareShape(initialPoint.getX(), initialPoint.getY(), width, height,
+							chosenColor);
+				}
+
 				addToShapesList(currentShape);
 				repaint();
 			}
@@ -98,10 +111,15 @@ public class PaintPanel extends JPanel {
 
 		for (int i = 0; i < shapesList.size(); i++) {
 			Shape shape = shapesList.get(i);
-			AffineTransform at = g2.getTransform();
-			g2.translate(shape.getX(), shape.getY());
-			shape.paint(g2);
-			g2.setTransform(at);
+			if (shape instanceof LineShape) {
+				shape.paint(g2);
+			} else {
+
+				AffineTransform at = g2.getTransform();
+				g2.translate(shape.getX(), shape.getY());
+				g2.setTransform(at);
+			}
 		}
+
 	}
 }
