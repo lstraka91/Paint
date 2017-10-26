@@ -18,7 +18,6 @@ public class CustomMenuListener implements ActionListener{
 		System.out.println("Popup menu item ["
 	            + e.getActionCommand() + "] was pressed.");
 		if(e.getActionCommand().equalsIgnoreCase("Load")){
-			String filename;
 			parentWindow.openFile();			
 		}else if(e.getActionCommand().equalsIgnoreCase("Save")){
 			parentWindow.openFile();
