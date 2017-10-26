@@ -22,7 +22,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem menuLoad;
 	private JMenuItem menuExit;
 	private JScrollPane scrollPane;
-	private JPanel drawPanel;
+	private JPanel paintPanel;
 	
 	public MainFrame() {
 		super("Paint");
@@ -81,8 +81,8 @@ public class MainFrame extends JFrame {
 		scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		
-		drawPanel = new DrawPanel();
-		scrollPane.setViewportView(drawPanel);
+		paintPanel = new PaintPanel();
+		scrollPane.setViewportView(paintPanel);
 
 	}
 
