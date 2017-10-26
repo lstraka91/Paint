@@ -175,55 +175,30 @@ public class MainFrame extends JFrame {
 		
 		shape_group = new ButtonGroup();
 		
-		JRadioButton shape_radioButton_20 = new JRadioButton("");
-		shape_radioButton_20.setBackground(SystemColor.menu);
-		panel_5.add(shape_radioButton_20);
-		shape_group.add(shape_radioButton_20);
+		JRadioButton shape_radioButton_0 = new JRadioButton("Line");
+		shape_radioButton_0.setBackground(SystemColor.menu);
+		panel_5.add(shape_radioButton_0);
+		shape_group.add(shape_radioButton_0);
 		
-		JRadioButton shape_radioButton_21 = new JRadioButton("");
-		shape_radioButton_21.setBackground(SystemColor.menu);
-		panel_5.add(shape_radioButton_21);
-		shape_group.add(shape_radioButton_21);
+		JRadioButton shape_radioButton_1 = new JRadioButton("Circle");
+		shape_radioButton_1.setBackground(SystemColor.menu);
+		panel_5.add(shape_radioButton_1);
+		shape_group.add(shape_radioButton_1);
 		
-		JRadioButton shape_radioButton_22 = new JRadioButton("");
-		shape_radioButton_22.setBackground(SystemColor.menu);
-		panel_5.add(shape_radioButton_22);
-		shape_group.add(shape_radioButton_22);
+		JRadioButton shape_radioButton_2 = new JRadioButton("Ellipse");
+		shape_radioButton_2.setBackground(SystemColor.menu);
+		panel_5.add(shape_radioButton_2);
+		shape_group.add(shape_radioButton_2);
 		
-		JRadioButton shape_radioButton_23 = new JRadioButton("");
-		shape_radioButton_23.setBackground(SystemColor.menu);
-		panel_5.add(shape_radioButton_23);
-		shape_group.add(shape_radioButton_23);
+		JRadioButton shape_radioButton_3 = new JRadioButton("Square");
+		shape_radioButton_3.setBackground(SystemColor.menu);
+		panel_5.add(shape_radioButton_3);
+		shape_group.add(shape_radioButton_3);
 		
-		JRadioButton shape_radioButton_24 = new JRadioButton("");
-		shape_radioButton_24.setBackground(SystemColor.menu);
-		panel_5.add(shape_radioButton_24);
-		shape_group.add(shape_radioButton_24);
-		
-		JRadioButton shape_radioButton_25 = new JRadioButton("");
-		shape_radioButton_25.setBackground(SystemColor.menu);
-		panel_5.add(shape_radioButton_25);
-		shape_group.add(shape_radioButton_25);
-		
-		JRadioButton shape_radioButton_26 = new JRadioButton("");
-		shape_radioButton_26.setBackground(SystemColor.menu);
-		panel_5.add(shape_radioButton_26);
-		shape_group.add(shape_radioButton_26);
-		
-		JRadioButton shape_radioButton_27 = new JRadioButton("");
-		shape_radioButton_27.setBackground(SystemColor.menu);
-		panel_5.add(shape_radioButton_27);
-		shape_group.add(shape_radioButton_27);
-		
-		JRadioButton shape_radioButton_28 = new JRadioButton("");
-		shape_radioButton_28.setBackground(SystemColor.menu);
-		panel_5.add(shape_radioButton_28);
-		shape_group.add(shape_radioButton_28);
-		
-		JRadioButton shape_radioButton_29 = new JRadioButton("");
-		shape_radioButton_29.setBackground(SystemColor.menu);
-		panel_5.add(shape_radioButton_29);
-		shape_group.add(shape_radioButton_29);
+		JRadioButton shape_radioButton_4 = new JRadioButton("Rectangle");
+		shape_radioButton_4.setBackground(SystemColor.menu);
+		panel_5.add(shape_radioButton_4);
+		shape_group.add(shape_radioButton_4);
 		
 		JPanel panel_3 = new JPanel();
 		home_tab.add(panel_3);
