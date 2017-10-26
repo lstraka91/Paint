@@ -148,27 +148,21 @@ public class MainFrame extends JFrame {
 		home_tab.add(panel_1);
 		panel_1.setLayout(new GridLayout(2, 1, 0, 0));
 		
-		JButton paste_bttn = new JButton("Paste");
-		panel_1.add(paste_bttn);
+		JButton select_bttn = new JButton("Select");
+		panel_1.add(select_bttn);
 		
-		JMenu paste_menu = new JMenu("Paste");
-		panel_1.add(paste_menu);
-		
-		JMenuItem paste_item = new JMenuItem("Paste");
-		paste_menu.add(paste_item);
-		
-		JMenuItem paste_from_item = new JMenuItem("Paste from");
-		paste_menu.add(paste_from_item);
+		JButton select_all_btn = new JButton("Select all");
+		panel_1.add(select_all_btn);
 		
 		JPanel panel_2 = new JPanel();
 		home_tab.add(panel_2);
 		panel_2.setLayout(new GridLayout(2, 1, 0, 0));
 		
-		JButton cut_bttn = new JButton("Cut");
-		panel_2.add(cut_bttn);
+		JButton paint_bttn = new JButton("Paint");
+		panel_2.add(paint_bttn);
 		
-		JButton copy_bttn = new JButton("Copy");
-		panel_2.add(copy_bttn);
+		JButton edit_bttn = new JButton("Edit");
+		panel_2.add(edit_bttn);
 		
 		JPanel panel_5 = new JPanel();
 		home_tab.add(panel_5);
@@ -204,12 +198,15 @@ public class MainFrame extends JFrame {
 		home_tab.add(panel_3);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 		
-		JLabel color_1_lbl = new JLabel("Color 1");
-		color_1_lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel_3.add(color_1_lbl);
+		JPanel panel_6 = new JPanel();
+		panel_3.add(panel_6);
+		panel_6.setLayout(new GridLayout(2, 1, 0, 0));
 		
-		JLabel color_2_lbl = new JLabel("Color 2");
-		panel_3.add(color_2_lbl);
+		JRadioButton fill_rbtn = new JRadioButton("Fill color");
+		panel_6.add(fill_rbtn);
+		
+		JRadioButton border_rbtn = new JRadioButton("Border color");
+		panel_6.add(border_rbtn);
 		
 		JPanel panel_4 = new JPanel();
 		panel_3.add(panel_4);
