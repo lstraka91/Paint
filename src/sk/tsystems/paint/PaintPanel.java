@@ -27,12 +27,14 @@ public class PaintPanel extends JPanel {
 	private Shape choosenShape;
 	private Color chosenColor;
 	private List<Shape> shapesList;
+
 	private Point initialPoint;
 	private Point endPoint;
 	private boolean drawing;
 	private boolean isEditMode;
 	private Shape selectedShape;
 	private Rectangle2D.Double selectRectangle;
+	private Rectangle2D.Double resizableRectangle;
 
 	public PaintPanel() {
 		shapesList = new ArrayList<>();
@@ -155,8 +157,8 @@ public class PaintPanel extends JPanel {
 						selectRectangle.setRect(selectRectangle.getX() + dx, selectRectangle.getY() + dy,
 								selectRectangle.getWidth(), selectRectangle.getHeight());
 						initialPoint.setLocation(e.getX(), e.getY());
-						selectedShape.setPosition(selectedShape.getX()+dx, selectedShape.getY()+dy);
-//						moveShapeTo(e.getPoint());
+						selectedShape.setPosition(selectedShape.getX() + dx, selectedShape.getY() + dy);
+						// moveShapeTo(e.getPoint());
 						repaint();
 					}
 				}
@@ -256,5 +258,13 @@ public class PaintPanel extends JPanel {
 
 	public void setChoosenColor(Color choosenColor) {
 		this.chosenColor = choosenColor;
+	}
+
+	public List<Shape> getShapesList() {
+		return shapesList;
+	}
+
+	public void setShapesList(List<Shape> shapesList) {
+		this.shapesList = shapesList;
 	}
 }
