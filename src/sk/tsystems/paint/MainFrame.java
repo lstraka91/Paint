@@ -43,6 +43,7 @@ import sk.tsystems.utils.FileUtils;
 import sk.tsystems.utils.JFontChooser;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
+import java.awt.FlowLayout;
 
 public class MainFrame extends JFrame {
 
@@ -66,7 +67,7 @@ public class MainFrame extends JFrame {
 		// setUndecorated(true);.
 		setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		getContentPane().add(new MainPanel());
-		
+
 		shape_group = new ButtonGroup();
 
 		color_type_group = new ButtonGroup();
@@ -118,6 +119,8 @@ public class MainFrame extends JFrame {
 		navigation_panel.setLayout(new BorderLayout(0, 0));
 
 		JPanel menu_panel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) menu_panel.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
 		navigation_panel.add(menu_panel, BorderLayout.CENTER);
 
 		JPanel panel_2 = new JPanel();
@@ -139,9 +142,19 @@ public class MainFrame extends JFrame {
 		JButton edit_bttn = new JButton("Edit");
 		panel_2.add(edit_bttn);
 
-		JButton btnSelect = new JButton("Select");
-		btnSelect.setEnabled(false);
-		panel_2.add(btnSelect);
+		JButton rotate_btn = new JButton("Rotate");
+		panel_2.add(rotate_btn);
+
+		JPopupMenu menu = new JPopupMenu();
+
+		rotate_btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComponent component = (JComponent) e.getSource();
+				menu.show(component, 0, component.getHeight());
+			}
+		});
 
 		JPanel panel_7 = new JPanel();
 		menu_panel.add(panel_7);
@@ -149,11 +162,12 @@ public class MainFrame extends JFrame {
 
 		JButton btnFotn = new JButton("Font");
 		btnFotn.addActionListener(menuListener);
+
+		JButton btnSelect = new JButton("Select");
+		panel_7.add(btnSelect);
+		btnSelect.setEnabled(false);
 		panel_7.add(btnFotn);
 
-		JButton rotate_btn = new JButton("Rotate");
-		panel_7.add(rotate_btn);
-		
 		JButton btnSize = new JButton("Size");
 		panel_7.add(btnSize);
 
@@ -162,6 +176,7 @@ public class MainFrame extends JFrame {
 		panel_5.setLayout(new GridLayout(3, 2, 0, 0));
 
 		JRadioButton shape_radioButton_0 = new JRadioButton("Line");
+		shape_radioButton_0.setSelected(true);
 		shape_radioButton_0.setBackground(SystemColor.menu);
 		panel_5.add(shape_radioButton_0);
 		shape_group.add(shape_radioButton_0);
@@ -212,20 +227,17 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				showColorPickDialog();
-				
-				
+
 			}
 		});
-		
-		/*rotate_btn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComponent component = (JComponent) e.getSource();
-				//menu.show(component, 0, component.getHeight());
-			}
-		});
-*/
+
+		/*
+		 * rotate_btn.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) { JComponent component =
+		 * (JComponent) e.getSource(); //menu.show(component, 0, component.getHeight());
+		 * } });
+		 */
 		JPanel panel_4 = new JPanel();
 		panel_3.add(panel_4);
 		panel_4.setLayout(new GridLayout(3, 10, 0, 0));
@@ -380,69 +392,56 @@ public class MainFrame extends JFrame {
 		radioButton_29.setBackground(SystemColor.menu);
 		panel_4.add(radioButton_29);
 		color_group.add(radioButton_29);
-		
-		JPopupMenu menu = new JPopupMenu();
-		
+
 		JMenuItem item = new JMenuItem("Rotate left");
 		menu.add(item);
-		
+
 		item = new JMenuItem("Rotate right");
 		menu.add(item);
-		
+
 		JSeparator separator = new JSeparator();
 		menu.add(separator);
-		
+
 		item = new JMenuItem("Rotate up");
 		menu.add(item);
-		
+
 		item = new JMenuItem("Rotate down");
 		menu.add(item);
-		
-		rotate_btn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComponent component = (JComponent) e.getSource();
-				menu.show(component, 0, component.getHeight());
-			}
-		});
-		
+
 		JPopupMenu menu2 = new JPopupMenu();
-		
+
 		item = new JMenuItem("1");
 		item.addActionListener(menuListener);
 		menu2.add(item);
-		
+
 		item = new JMenuItem("2");
 		item.addActionListener(menuListener);
 		menu2.add(item);
-		
+
 		separator = new JSeparator();
 		menu2.add(separator);
-	
+
 		item = new JMenuItem("3");
 		item.addActionListener(menuListener);
 		menu2.add(item);
-		
+
 		item = new JMenuItem("4");
 		item.addActionListener(menuListener);
 		menu2.add(item);
-		
+
 		item = new JMenuItem("5");
 		item.addActionListener(menuListener);
 		menu2.add(item);
-				
-		
-		
+
 		btnSize.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComponent component = (JComponent) e.getSource();
 				menu2.show(component, 0, component.getHeight());
 			}
 		});
-		
+
 		Component[] itemsArray = menu2.getComponents();
 		for (int i = 0; i < itemsArray.length; i++) {
 			Component sizeItem = itemsArray[i];
@@ -456,8 +455,6 @@ public class MainFrame extends JFrame {
 				}
 			});
 		}
-		
-		
 
 		edit_bttn.addMouseListener(new MouseAdapter() {
 
@@ -485,7 +482,7 @@ public class MainFrame extends JFrame {
 
 			});
 		}
-		
+
 		for (Enumeration<AbstractButton> buttons = color_group.getElements(); buttons.hasMoreElements();) {
 			AbstractButton button = buttons.nextElement();
 
@@ -496,10 +493,10 @@ public class MainFrame extends JFrame {
 					JRadioButton newSelected = ((JRadioButton) e.getComponent());
 					if (fill__radioButton.isSelected()) {
 						paintPanel.setChoosenColor(newSelected.getBackground());
-					//	fillColor = newSelected.getBackground();
+						// fillColor = newSelected.getBackground();
 						System.out.println("Fill color choosen: " + newSelected.getBackground().toString());
 					} else {
-						//borderColor = newSelected.getBackground();
+						// borderColor = newSelected.getBackground();
 						paintPanel.setChoosenBorderColor(newSelected.getBackground());
 						System.out.println("Border color choosen: " + newSelected.getBackground().toString());
 					}
@@ -543,7 +540,7 @@ public class MainFrame extends JFrame {
 	public Color getFillColor() {
 		return fillColor;
 	}
-	
+
 	public void showColorPickDialog() {
 		JColorChooser jfc = new JColorChooser();
 		jfc.showDialog(this, "Random string", Color.BLACK);
@@ -592,7 +589,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public void setWidth(int i) {
-		paintPanel.setBorderWidth((float)i);
+		paintPanel.setBorderWidth((float) i);
 		System.out.println(">>>>>>" + i);
 	}
 }
