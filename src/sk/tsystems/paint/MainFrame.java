@@ -1,49 +1,41 @@
 package sk.tsystems.paint;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Enumeration;
+import java.util.List;
 
+import javax.swing.AbstractButton;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import sk.tsystems.paint.shapes.CircleShape;
+import sk.tsystems.paint.shapes.EllipseShape;
+import sk.tsystems.paint.shapes.LineShape;
+import sk.tsystems.paint.shapes.RectangleShape;
+import sk.tsystems.paint.shapes.SquareShape;
 import sk.tsystems.utils.CustomMenuListener;
 import sk.tsystems.utils.FileUtils;
 import sk.tsystems.utils.JFontChooser;
-
-import javax.swing.JScrollPane;
-import java.awt.CardLayout;
-import javax.swing.JLayeredPane;
-import java.awt.Color;
-import javax.swing.JTabbedPane;
-import javax.swing.JLabel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JInternalFrame;
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.Component;
-import javax.swing.JRadioButton;
-import java.awt.SystemColor;
-import javax.swing.JList;
 
 public class MainFrame extends JFrame {
 
@@ -53,10 +45,12 @@ public class MainFrame extends JFrame {
 	private JMenuItem menuLoad;
 	private JMenuItem menuExit;
 	private JScrollPane scrollPane;
-	private JPanel paintPanel;
+	private PaintPanel paintPanel;
 	private ButtonGroup color_group;
 	private ButtonGroup shape_group;
 	private ButtonGroup color_type_group;
+	private Color borderColor = Color.BLACK;
+	private Color fillColor = null;
 
 	public MainFrame() {
 		super("Paint");
@@ -112,32 +106,8 @@ public class MainFrame extends JFrame {
 
 		menuExit = new JMenuItem("Exit");
 		fileMenu.add(menuExit);
-
-		JPanel panel = new JPanel();
-
-		JButton saveBttn = new JButton("New button");
-		panel.add(saveBttn);
-
-		JButton undoBttn = new JButton("New button");
-		panel.add(undoBttn);
-
-		JButton redoBttn = new JButton("New button");
-		panel.add(redoBttn);
-
-		JLabel fileName = new JLabel("File name");
-		GroupLayout gl_menu_panel = new GroupLayout(menu_panel);
-		gl_menu_panel.setHorizontalGroup(gl_menu_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_menu_panel.createSequentialGroup()
-						.addComponent(menuBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 852, GroupLayout.PREFERRED_SIZE)
-						.addComponent(fileName)));
-		gl_menu_panel.setVerticalGroup(gl_menu_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_menu_panel.createSequentialGroup().addGap(17).addComponent(menuBar,
-						GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-				.addGroup(gl_menu_panel.createSequentialGroup().addGap(10).addComponent(fileName)));
-		menu_panel.setLayout(gl_menu_panel);
+		
+		setJMenuBar(menuBar);
 
 		JTabbedPane tabbed_panel = new JTabbedPane(JTabbedPane.TOP);
 		navigation_panel.add(tabbed_panel, BorderLayout.SOUTH);
@@ -145,19 +115,9 @@ public class MainFrame extends JFrame {
 		JPanel home_tab = new JPanel();
 		tabbed_panel.addTab("Home", null, home_tab, null);
 
-		JPanel panel_1 = new JPanel();
-		home_tab.add(panel_1);
-		panel_1.setLayout(new GridLayout(2, 1, 0, 0));
-
-		JButton select_bttn = new JButton("Select");
-		panel_1.add(select_bttn);
-
-		JButton select_all_btn = new JButton("Select all");
-		panel_1.add(select_all_btn);
-
 		JPanel panel_2 = new JPanel();
 		home_tab.add(panel_2);
-		panel_2.setLayout(new GridLayout(2, 1, 0, 0));
+		panel_2.setLayout(new GridLayout(3, 1, 0, 0));
 
 		JButton paint_bttn = new JButton("Paint");
 		panel_2.add(paint_bttn);
@@ -166,41 +126,44 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				((PaintPanel) paintPanel).setEditMode(false);
+				paintPanel.setEditMode(false);
 
 			}
 		});
 
 		JButton edit_bttn = new JButton("Edit");
 		panel_2.add(edit_bttn);
+		
+		JButton btnSelect = new JButton("Select");
+		btnSelect.setEnabled(false);
+		panel_2.add(btnSelect);
 
 		edit_bttn.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				((PaintPanel) paintPanel).setEditMode(true);
+				paintPanel.setEditMode(true);
 
 			}
 		});
 
 		JPanel panel_7 = new JPanel();
 		home_tab.add(panel_7);
-		panel_7.setLayout(new GridLayout(2, 1, 0, 0));
+		panel_7.setLayout(new GridLayout(3, 1, 0, 0));
 
 		JButton btnFotn = new JButton("Font");
 		btnFotn.addActionListener(menuListener);
 		panel_7.add(btnFotn);
 
 		JButton rotate_btn = new JButton("Rotate");
+		rotate_btn.setEnabled(false);
 		panel_7.add(rotate_btn);
-
-		JList list = new JList();
-		panel_7.add(list);
 
 		JPanel panel_5 = new JPanel();
 		home_tab.add(panel_5);
 
 		shape_group = new ButtonGroup();
+		panel_5.setLayout(new GridLayout(3, 2, 0, 0));
 
 		JRadioButton shape_radioButton_0 = new JRadioButton("Line");
 		shape_radioButton_0.setBackground(SystemColor.menu);
@@ -226,36 +189,70 @@ public class MainFrame extends JFrame {
 		shape_radioButton_4.setBackground(SystemColor.menu);
 		panel_5.add(shape_radioButton_4);
 		shape_group.add(shape_radioButton_4);
-		
+
+		for (Enumeration<AbstractButton> buttons = shape_group.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+
+			button.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					JRadioButton newSelected = ((JRadioButton) e.getComponent());
+					// newSelected.setSelected(true);
+					Shape newShape = identifyShape(newSelected);
+					paintPanel.setChoosenShape(newShape);
+					System.out.println(">>>>>>>>>> new shape: " + newShape.getClass().toString());
+
+				}
+
+			});
+		}
+
 		JPanel panel_3 = new JPanel();
 		home_tab.add(panel_3);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 
 		JPanel panel_6 = new JPanel();
 		panel_3.add(panel_6);
-		panel_6.setLayout(new GridLayout(2, 1, 0, 0));
+		panel_6.setLayout(new GridLayout(3, 1, 0, 0));
 
 		color_type_group = new ButtonGroup();
+
+		JRadioButton fill__radioButton = new JRadioButton("Fill color");
+		fill__radioButton.setBackground(fillColor);
+		fill__radioButton.setSelected(true);
+		panel_6.add(fill__radioButton);
+		color_type_group.add(fill__radioButton);
+
+		JRadioButton border__radioButton = new JRadioButton("Border color");
+		border__radioButton.setBackground(borderColor);
+		panel_6.add(border__radioButton);
+		color_type_group.add(border__radioButton);
 		
-		JRadioButton fill_rbtn = new JRadioButton("Fill color");
-		panel_6.add(fill_rbtn);
-		color_type_group.add(fill_rbtn);
-		
-		JRadioButton border_rbtn = new JRadioButton("Border color");
-		panel_6.add(border_rbtn);
-		color_type_group.add(border_rbtn);
-		
+				JButton edit_colors_btn = new JButton("Edit colors");
+				panel_6.add(edit_colors_btn);
+				edit_colors_btn.addMouseListener(new MouseAdapter() {
+
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						getContentPane().add(new JColorChooser(), BorderLayout.SOUTH);
+						getContentPane().revalidate();
+						//System.out.println("Color choosen: " + newSelected.getBackground().toString());
+					}
+				});
+
 		JPanel panel_4 = new JPanel();
 		panel_3.add(panel_4);
 		panel_4.setLayout(new GridLayout(3, 10, 0, 0));
 
 		color_group = new ButtonGroup();
-		
-		JRadioButton radioButton = new JRadioButton("");
-		radioButton.setBackground(Color.BLACK);
-		panel_4.add(radioButton);
-		color_group.add(radioButton);
-		
+
+		JRadioButton radioButton_0 = new JRadioButton("");
+		radioButton_0.setSelected(true);
+		radioButton_0.setBackground(Color.BLACK);
+		panel_4.add(radioButton_0);
+		color_group.add(radioButton_0);
+
 		JRadioButton radioButton_1 = new JRadioButton("");
 		radioButton_1.setBackground(Color.GRAY);
 		panel_4.add(radioButton_1);
@@ -400,9 +397,28 @@ public class MainFrame extends JFrame {
 		radioButton_29.setBackground(SystemColor.menu);
 		panel_4.add(radioButton_29);
 		color_group.add(radioButton_29);
-		
-		JLabel edit_colors_lbl = new JLabel("Edit colors");
-		panel_3.add(edit_colors_lbl);
+
+		for (Enumeration<AbstractButton> buttons = color_group.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+
+			button.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					JRadioButton newSelected = ((JRadioButton) e.getComponent());
+					if(fill__radioButton.isSelected()) {
+						fillColor = newSelected.getBackground();
+						System.out.println("Fill color choosen: " + newSelected.getBackground().toString());
+					} else {
+						borderColor = newSelected.getBackground();
+						System.out.println("Border color choosen: " + newSelected.getBackground().toString());
+					}
+					// newSelected.setSelected(true);
+					paintPanel.setChoosenColor(newSelected.getBackground());
+					
+				}
+			});
+		}
 
 		JPanel view_tab = new JPanel();
 		tabbed_panel.addTab("View", null, view_tab, null);
@@ -413,6 +429,32 @@ public class MainFrame extends JFrame {
 		paintPanel = new PaintPanel();
 		scrollPane.setViewportView(paintPanel);
 
+	}
+
+	private Shape identifyShape(JRadioButton newSelected) {
+		switch (newSelected.getText()) {
+		case "Line":
+			return new LineShape();
+		case "Circle":
+			return new CircleShape();
+		case "Ellipse":
+			return new EllipseShape();
+		case "Square":
+			return new SquareShape();
+		case "Rectangle":
+			return new RectangleShape();
+		default:
+			return null;
+		}
+
+	}
+	
+	public Color getBorderColor() {
+		return borderColor;
+	}
+
+	public Color getFillColor() {
+		return fillColor;
 	}
 
 	public static void main(String[] args) {
