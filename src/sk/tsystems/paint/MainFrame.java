@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import sk.tsystems.utils.CustomMenuListener;
 import sk.tsystems.utils.FileUtils;
+import sk.tsystems.utils.JFontChooser;
 
 import javax.swing.JScrollPane;
 import java.awt.CardLayout;
@@ -65,17 +66,6 @@ public class MainFrame extends JFrame {
 		initPanel();
 	}
 	
-	private void loadImageFile() {
-		JFileChooser chooser = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-		        "JPG & GIF Images", "jpg", "gif");
-	    chooser.setFileFilter(filter);
-	    int returnVal = chooser.showOpenDialog(this);
-	    if(returnVal == JFileChooser.APPROVE_OPTION) {
-	       System.out.println("You chose to open this file: " +
-	            chooser.getSelectedFile().getName());
-	    }
-	}
 	
 	private void initPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -172,6 +162,7 @@ public class MainFrame extends JFrame {
 		panel_7.setLayout(new GridLayout(2, 1, 0, 0));
 		
 		JButton btnFotn = new JButton("Font");
+		btnFotn.addActionListener(menuListener);
 		panel_7.add(btnFotn);
 		
 		JPanel panel_5 = new JPanel();
@@ -432,5 +423,10 @@ public class MainFrame extends JFrame {
 	       int result=FileUtils.savePainting(((PaintPanel)paintPanel).getShapesList(), chooser.getSelectedFile());
 	       
 	    }
+	}
+	
+	public void choseFont() {
+		JFontChooser jfc=new JFontChooser();
+		jfc.showDialog(this);
 	}
 }

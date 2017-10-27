@@ -21,7 +21,10 @@ public class CustomMenuListener implements ActionListener{
 			parentWindow.openFile();			
 		}else if(e.getActionCommand().equalsIgnoreCase("Save")){
 			parentWindow.saveFile();
+		}else if(e.getActionCommand().equalsIgnoreCase("Font")) {
+			parentWindow.choseFont();
 		}
+			
 	}
 			
 
