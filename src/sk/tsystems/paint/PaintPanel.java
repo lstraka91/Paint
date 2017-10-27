@@ -90,6 +90,7 @@ public class PaintPanel extends JPanel {
 						if (selectRectangle.contains(e.getPoint())) {
 							System.out.println("is Selected ");
 							selectedShape = shape;
+							initialPoint = new Point(e.getX(), e.getY());
 							repaint();
 							return;
 						}
@@ -149,11 +150,13 @@ public class PaintPanel extends JPanel {
 					}
 				} else {
 					if (selectRectangle != null) {
-						int dx = (int) (e.getX() - selectedShape.getX());
-						int dy = (int) (e.getY() - selectedShape.getY());
+						int dx = (int) (e.getX() - initialPoint.getX());
+						int dy = (int) (e.getY() - initialPoint.getY());
 						selectRectangle.setRect(selectRectangle.getX() + dx, selectRectangle.getY() + dy,
 								selectRectangle.getWidth(), selectRectangle.getHeight());
-						moveShapeTo(e.getPoint());
+						initialPoint.setLocation(e.getX(), e.getY());
+						selectedShape.setPosition(selectedShape.getX()+dx, selectedShape.getY()+dy);
+//						moveShapeTo(e.getPoint());
 						repaint();
 					}
 				}
