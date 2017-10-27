@@ -178,6 +178,13 @@ public class MainFrame extends JFrame {
 		JButton edit_bttn = new JButton("Edit");
 		panel_2.add(edit_bttn);
 		
+		JPanel panel_7 = new JPanel();
+		home_tab.add(panel_7);
+		panel_7.setLayout(new GridLayout(2, 1, 0, 0));
+		
+		JButton btnFotn = new JButton("Font");
+		panel_7.add(btnFotn);
+		
 		JPanel panel_5 = new JPanel();
 		home_tab.add(panel_5);
 		
