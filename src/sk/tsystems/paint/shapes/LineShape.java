@@ -1,5 +1,6 @@
 package sk.tsystems.paint.shapes;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
@@ -21,7 +22,7 @@ public class LineShape extends Shape {
 	@Override
 	public void paint(Graphics2D g2) {
 		g2.setColor(getShapeColor());
-		g2.setStroke(getBorderWidth());
+		g2.setStroke(new BasicStroke(getBorderWidth()));
 		System.out.println(" LINE " + getX() + " " + getY() + " " + getWidth() + " " + getHeight());
 		shape = new Line2D.Double(getX(), getY(), getWidth(), getHeight());
 		g2.draw(shape);

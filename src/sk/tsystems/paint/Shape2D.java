@@ -1,5 +1,6 @@
 package sk.tsystems.paint;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -30,7 +31,7 @@ public abstract class Shape2D extends Shape {
 		g2.setColor(getShapeColor());
 		g2.fill(shape);
 		g2.setColor(getBorderColor());
-		g2.setStroke(getBorderWidth());
+		g2.setStroke(new BasicStroke(getBorderWidth()));
 		g2.draw(shape);
 	}
 

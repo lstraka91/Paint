@@ -18,7 +18,7 @@ public abstract class Shape implements Serializable {
 	private double height;
 	private Color shapeColor;
 	private Color borderColor;
-	private Stroke borderWidth;
+	private float borderWidth;
 
 	public Shape() {
 
@@ -30,7 +30,7 @@ public abstract class Shape implements Serializable {
 		this.height = height;
 		this.shapeColor = color;
 		this.borderColor = color;
-		this.borderWidth = new BasicStroke(1);
+		this.borderWidth = 1;
 	}
 
 	public double getX() {
@@ -90,12 +90,12 @@ public abstract class Shape implements Serializable {
 				shape.getWidth(), shape.getHeight());
 	}
 
-	public Stroke getBorderWidth() {
+	public float getBorderWidth() {
 		return borderWidth;
 	}
 
 	public void setBorderWidth(float borderWidth) {
-		this.borderWidth = new BasicStroke(borderWidth);
+		this.borderWidth = borderWidth;
 	}
 
 	public abstract void paint(Graphics2D g2);

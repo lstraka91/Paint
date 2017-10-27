@@ -49,7 +49,7 @@ public class PaintPanel extends JPanel {
 		chosenBorderColor = Color.BLUE;
 		choosenShape = new LineShape();
 		drawing = false;
-		isEditMode = true;
+		isEditMode = false;
 		resizableMode = false;
 
 		//// current Shape change dynamically
