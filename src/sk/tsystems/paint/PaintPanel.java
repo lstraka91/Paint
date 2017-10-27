@@ -23,6 +23,7 @@ import sk.tsystems.paint.shapes.SquareShape;
 
 public class PaintPanel extends JPanel {
 
+	private final int RESIZABLE_SQUARE = 5;
 	private Shape currentShape;
 	private Shape choosenShape;
 	private Color chosenColor;
@@ -89,6 +90,12 @@ public class PaintPanel extends JPanel {
 						Shape shape = shapesList.get(i);
 						selectRectangle = new Rectangle2D.Double(shape.getX(), shape.getY(), shape.getWidth(),
 								shape.getHeight());
+						resizableRectangle = new Rectangle2D.Double(shape.getX() + shape.getWidth() - RESIZABLE_SQUARE,
+								shape.getY() + shape.getHeight() - RESIZABLE_SQUARE, RESIZABLE_SQUARE,
+								RESIZABLE_SQUARE);
+						if (resizableRectangle.contains(e.getPoint())) {
+							repaint();
+						}
 						if (selectRectangle.contains(e.getPoint())) {
 							System.out.println("is Selected ");
 							selectedShape = shape;
@@ -152,13 +159,13 @@ public class PaintPanel extends JPanel {
 					}
 				} else {
 					if (selectRectangle != null) {
-						int dx = (int) (e.getX() - initialPoint.getX());
-						int dy = (int) (e.getY() - initialPoint.getY());
-						selectRectangle.setRect(selectRectangle.getX() + dx, selectRectangle.getY() + dy,
-								selectRectangle.getWidth(), selectRectangle.getHeight());
-						initialPoint.setLocation(e.getX(), e.getY());
-						selectedShape.setPosition(selectedShape.getX() + dx, selectedShape.getY() + dy);
-						// moveShapeTo(e.getPoint());
+						moveShapeTo(e.getPoint());
+//						int dx = (int) (e.getX() - initialPoint.getX());
+//						int dy = (int) (e.getY() - initialPoint.getY());
+//						selectRectangle.setRect(selectRectangle.getX() + dx, selectRectangle.getY() + dy,
+//								selectRectangle.getWidth(), selectRectangle.getHeight());
+//						initialPoint.setLocation(e.getX(), e.getY());
+//						selectedShape.setPosition(selectedShape.getX() + dx, selectedShape.getY() + dy);
 						repaint();
 					}
 				}
@@ -166,7 +173,13 @@ public class PaintPanel extends JPanel {
 			}
 
 			private void moveShapeTo(Point point) {
-
+				int dx = (int) (point.getX() - initialPoint.getX());
+				int dy = (int) (point.getY() - initialPoint.getY());
+				selectRectangle.setRect(selectRectangle.getX() + dx, selectRectangle.getY() + dy,
+						selectRectangle.getWidth(), selectRectangle.getHeight());
+				initialPoint.setLocation(point.getX(), point.getY());
+				selectedShape.setPosition(selectedShape.getX() + dx, selectedShape.getY() + dy);
+				resizableRectangle.setRect(resizableRectangle.getX()+dx, resizableRectangle.getY()+dy, RESIZABLE_SQUARE, RESIZABLE_SQUARE);
 			}
 		});
 	}
@@ -213,33 +226,9 @@ public class PaintPanel extends JPanel {
 		if (selectedShape != null) {
 			g2.setColor(Color.RED);
 			g2.draw(selectRectangle);
+			g2.fill(resizableRectangle);
 		}
 
-	}
-
-	private Point changeInitialPoint(int initX, int initY, int endX, int endY) {
-		int tempInitX = 0;
-		int tempInitY = 0;
-		int tempEndY = 0;
-		int tempEndX = 0;
-		Point tempEnd = new Point(0, 0);
-		if (initX < endX) {
-			tempInitX = initX;
-			tempEndX = endX;
-		} else {
-			tempInitX = endX;
-			tempEndX = initX;
-		}
-		if (initY < endY) {
-			tempInitY = initY;
-			tempEndY = endY;
-		} else {
-			tempInitY = endY;
-			tempEndY = initY;
-		}
-		initialPoint.setLocation(tempInitX, tempInitY);
-		tempEnd.setLocation(tempEndX, tempEndY);
-		return tempEnd;
 	}
 
 	private void initShapes() {
