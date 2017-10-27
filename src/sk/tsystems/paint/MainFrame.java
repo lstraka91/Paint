@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
@@ -16,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -36,6 +39,7 @@ import sk.tsystems.paint.shapes.SquareShape;
 import sk.tsystems.utils.CustomMenuListener;
 import sk.tsystems.utils.FileUtils;
 import sk.tsystems.utils.JFontChooser;
+import javax.swing.JPopupMenu;
 
 public class MainFrame extends JFrame {
 
@@ -59,10 +63,15 @@ public class MainFrame extends JFrame {
 		// setUndecorated(true);.
 		setSize(Toolkit.getDefaultToolkit().getScreenSize());
 		getContentPane().add(new MainPanel());
+		
+		shape_group = new ButtonGroup();
+
+		color_type_group = new ButtonGroup();
+
+		color_group = new ButtonGroup();
 
 		initPanel();
 	}
-
 
 	private void loadImageFile() {
 		JFileChooser chooser = new JFileChooser();
@@ -74,7 +83,6 @@ public class MainFrame extends JFrame {
 		}
 	}
 
-
 	private void initPanel() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 950, 500);
@@ -83,19 +91,12 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
-		navigation_panel = new JPanel();
-		contentPane.add(navigation_panel, BorderLayout.NORTH);
-		navigation_panel.setLayout(new BorderLayout(0, 0));
-
-		JPanel menu_panel = new JPanel();
-		navigation_panel.add(menu_panel, BorderLayout.CENTER);
-
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
-		
-		CustomMenuListener menuListener=new CustomMenuListener(this);
+
+		CustomMenuListener menuListener = new CustomMenuListener(this);
 		menuSave = new JMenuItem("Save");
 		menuSave.addActionListener(menuListener);
 		fileMenu.add(menuSave);
@@ -106,17 +107,18 @@ public class MainFrame extends JFrame {
 
 		menuExit = new JMenuItem("Exit");
 		fileMenu.add(menuExit);
-		
+
 		setJMenuBar(menuBar);
 
-		JTabbedPane tabbed_panel = new JTabbedPane(JTabbedPane.TOP);
-		navigation_panel.add(tabbed_panel, BorderLayout.SOUTH);
+		navigation_panel = new JPanel();
+		contentPane.add(navigation_panel, BorderLayout.NORTH);
+		navigation_panel.setLayout(new BorderLayout(0, 0));
 
-		JPanel home_tab = new JPanel();
-		tabbed_panel.addTab("Home", null, home_tab, null);
+		JPanel menu_panel = new JPanel();
+		navigation_panel.add(menu_panel, BorderLayout.CENTER);
 
 		JPanel panel_2 = new JPanel();
-		home_tab.add(panel_2);
+		menu_panel.add(panel_2);
 		panel_2.setLayout(new GridLayout(3, 1, 0, 0));
 
 		JButton paint_bttn = new JButton("Paint");
@@ -133,22 +135,13 @@ public class MainFrame extends JFrame {
 
 		JButton edit_bttn = new JButton("Edit");
 		panel_2.add(edit_bttn);
-		
+
 		JButton btnSelect = new JButton("Select");
 		btnSelect.setEnabled(false);
 		panel_2.add(btnSelect);
 
-		edit_bttn.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				paintPanel.setEditMode(true);
-
-			}
-		});
-
 		JPanel panel_7 = new JPanel();
-		home_tab.add(panel_7);
+		menu_panel.add(panel_7);
 		panel_7.setLayout(new GridLayout(3, 1, 0, 0));
 
 		JButton btnFotn = new JButton("Font");
@@ -160,9 +153,7 @@ public class MainFrame extends JFrame {
 		panel_7.add(rotate_btn);
 
 		JPanel panel_5 = new JPanel();
-		home_tab.add(panel_5);
-
-		shape_group = new ButtonGroup();
+		menu_panel.add(panel_5);
 		panel_5.setLayout(new GridLayout(3, 2, 0, 0));
 
 		JRadioButton shape_radioButton_0 = new JRadioButton("Line");
@@ -190,33 +181,13 @@ public class MainFrame extends JFrame {
 		panel_5.add(shape_radioButton_4);
 		shape_group.add(shape_radioButton_4);
 
-		for (Enumeration<AbstractButton> buttons = shape_group.getElements(); buttons.hasMoreElements();) {
-			AbstractButton button = buttons.nextElement();
-
-			button.addMouseListener(new MouseAdapter() {
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					JRadioButton newSelected = ((JRadioButton) e.getComponent());
-					// newSelected.setSelected(true);
-					Shape newShape = identifyShape(newSelected);
-					paintPanel.setChoosenShape(newShape);
-					System.out.println(">>>>>>>>>> new shape: " + newShape.getClass().toString());
-
-				}
-
-			});
-		}
-
 		JPanel panel_3 = new JPanel();
-		home_tab.add(panel_3);
+		menu_panel.add(panel_3);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 
 		JPanel panel_6 = new JPanel();
 		panel_3.add(panel_6);
 		panel_6.setLayout(new GridLayout(3, 1, 0, 0));
-
-		color_type_group = new ButtonGroup();
 
 		JRadioButton fill__radioButton = new JRadioButton("Fill color");
 		fill__radioButton.setBackground(fillColor);
@@ -228,24 +199,31 @@ public class MainFrame extends JFrame {
 		border__radioButton.setBackground(borderColor);
 		panel_6.add(border__radioButton);
 		color_type_group.add(border__radioButton);
-		
-				JButton edit_colors_btn = new JButton("Edit colors");
-				panel_6.add(edit_colors_btn);
-				edit_colors_btn.addMouseListener(new MouseAdapter() {
 
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						getContentPane().add(new JColorChooser(), BorderLayout.SOUTH);
-						getContentPane().revalidate();
-						//System.out.println("Color choosen: " + newSelected.getBackground().toString());
-					}
-				});
+		JButton edit_colors_btn = new JButton("Edit colors");
+		panel_6.add(edit_colors_btn);
+		edit_colors_btn.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				showColorPickDialog();
+				
+				
+			}
+		});
+		
+		rotate_btn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComponent component = (JComponent) e.getSource();
+				//menu.show(component, 0, component.getHeight());
+			}
+		});
 
 		JPanel panel_4 = new JPanel();
 		panel_3.add(panel_4);
 		panel_4.setLayout(new GridLayout(3, 10, 0, 0));
-
-		color_group = new ButtonGroup();
 
 		JRadioButton radioButton_0 = new JRadioButton("");
 		radioButton_0.setSelected(true);
@@ -397,7 +375,37 @@ public class MainFrame extends JFrame {
 		radioButton_29.setBackground(SystemColor.menu);
 		panel_4.add(radioButton_29);
 		color_group.add(radioButton_29);
+		
+		JPopupMenu menu = new JPopupMenu();
+		navigation_panel.add(menu, BorderLayout.NORTH);
 
+		edit_bttn.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				paintPanel.setEditMode(true);
+
+			}
+		});
+
+		for (Enumeration<AbstractButton> buttons = shape_group.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+
+			button.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					JRadioButton newSelected = ((JRadioButton) e.getComponent());
+					// newSelected.setSelected(true);
+					Shape newShape = identifyShape(newSelected);
+					paintPanel.setChoosenShape(newShape);
+					System.out.println(">>>>>>>>>> new shape: " + newShape.getClass().toString());
+
+				}
+
+			});
+		}
+		
 		for (Enumeration<AbstractButton> buttons = color_group.getElements(); buttons.hasMoreElements();) {
 			AbstractButton button = buttons.nextElement();
 
@@ -406,22 +414,21 @@ public class MainFrame extends JFrame {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					JRadioButton newSelected = ((JRadioButton) e.getComponent());
-					if(fill__radioButton.isSelected()) {
-						fillColor = newSelected.getBackground();
+					if (fill__radioButton.isSelected()) {
+						paintPanel.setChoosenColor(newSelected.getBackground());
+					//	fillColor = newSelected.getBackground();
 						System.out.println("Fill color choosen: " + newSelected.getBackground().toString());
 					} else {
-						borderColor = newSelected.getBackground();
+						//borderColor = newSelected.getBackground();
+						paintPanel.setChoosenBorderColor(newSelected.getBackground());
 						System.out.println("Border color choosen: " + newSelected.getBackground().toString());
 					}
 					// newSelected.setSelected(true);
 					paintPanel.setChoosenColor(newSelected.getBackground());
-					
+
 				}
 			});
 		}
-
-		JPanel view_tab = new JPanel();
-		tabbed_panel.addTab("View", null, view_tab, null);
 
 		scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
@@ -448,13 +455,18 @@ public class MainFrame extends JFrame {
 		}
 
 	}
-	
+
 	public Color getBorderColor() {
 		return borderColor;
 	}
 
 	public Color getFillColor() {
 		return fillColor;
+	}
+	
+	public void showColorPickDialog() {
+		JColorChooser jfc = new JColorChooser();
+		jfc.showDialog(this, "Random string", Color.BLACK);
 	}
 
 	public static void main(String[] args) {
@@ -493,9 +505,9 @@ public class MainFrame extends JFrame {
 
 		}
 	}
-	
+
 	public void choseFont() {
-		JFontChooser jfc=new JFontChooser();
+		JFontChooser jfc = new JFontChooser();
 		jfc.showDialog(this);
 	}
 }
