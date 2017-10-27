@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import sk.tsystems.utils.CustomMenuListener;
+import sk.tsystems.utils.FileUtils;
 
 import javax.swing.JScrollPane;
 import java.awt.CardLayout;
@@ -32,6 +33,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JInternalFrame;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -406,12 +408,14 @@ public class MainFrame extends JFrame {
 	public void saveFile() {
 		JFileChooser chooser = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-		        "Enter filename");
+		        "Enter filename","drw");
 	    chooser.setFileFilter(filter);
-	    int returnVal = chooser.showOpenDialog(this);
+	    int returnVal = chooser.showSaveDialog(this);
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
 	       System.out.println("You chose to open this file: " +
 	            chooser.getSelectedFile().getName());
+	       int result=FileUtils.savePainting(((PaintPanel)paintPanel).getShapesList(), new File(chooser.getSelectedFile().getName()));
+	       
 	    }
 	}
 }

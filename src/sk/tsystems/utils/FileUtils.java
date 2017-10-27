@@ -7,10 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtils {
 
-	public int savePainting( ArrayList list, File fout) {
+	public static int savePainting( List list, File fout) {
 		
 		if(fout!=null) {
 			try {
@@ -20,7 +21,7 @@ public class FileUtils {
 				oos.flush();
 				oos.close();
 				fos.close();
-			
+			System.out.println("Succesfulty saved "+list.size()+" drawing objects into "+fout.getName());
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
