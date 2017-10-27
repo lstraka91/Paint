@@ -4,8 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 
-public abstract class Shape {
+public abstract class Shape implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5939550702727629110L;
 	private Point2D.Double position;
 	private double width;
 	private double height;
