@@ -493,10 +493,12 @@ public class MainFrame extends JFrame {
 					JRadioButton newSelected = ((JRadioButton) e.getComponent());
 					if (fill__radioButton.isSelected()) {
 						paintPanel.setChoosenColor(newSelected.getBackground());
-						// fillColor = newSelected.getBackground();
+						fillColor = newSelected.getBackground();
+						fill__radioButton.setBackground(newSelected.getBackground());
 						System.out.println("Fill color choosen: " + newSelected.getBackground().toString());
 					} else {
-						// borderColor = newSelected.getBackground();
+						borderColor = newSelected.getBackground();
+						border__radioButton.setBackground(newSelected.getBackground());
 						paintPanel.setChoosenBorderColor(newSelected.getBackground());
 						System.out.println("Border color choosen: " + newSelected.getBackground().toString());
 					}
