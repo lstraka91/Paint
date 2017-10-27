@@ -401,7 +401,15 @@ public class MainFrame extends JFrame {
 	    int returnVal = chooser.showOpenDialog(this);
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
 	       System.out.println("You chose to open this file: " +
-	            chooser.getSelectedFile().getName());
+	            chooser.getSelectedFile());
+	       List list=FileUtils.loadPainting(chooser.getSelectedFile());
+	       if(list!=null) {
+	    	   ((PaintPanel)paintPanel).setShapesList(list);
+	    	   paintPanel.repaint();
+	       }
+	       else {
+	    	   System.out.println("Loading of drawing objects failed");
+	       }
 	    }
 	}
 
