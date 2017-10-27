@@ -21,6 +21,7 @@ public class LineShape extends Shape {
 	@Override
 	public void paint(Graphics2D g2) {
 		g2.setColor(getShapeColor());
+		g2.setStroke(getBorderWidth());
 		System.out.println(" LINE " + getX() + " " + getY() + " " + getWidth() + " " + getHeight());
 		shape = new Line2D.Double(getX(), getY(), getWidth(), getHeight());
 		g2.draw(shape);

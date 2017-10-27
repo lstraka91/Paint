@@ -1,7 +1,9 @@
 package sk.tsystems.paint;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
@@ -16,6 +18,7 @@ public abstract class Shape implements Serializable {
 	private double height;
 	private Color shapeColor;
 	private Color borderColor;
+	private Stroke borderWidth;
 
 	public Shape() {
 
@@ -27,6 +30,7 @@ public abstract class Shape implements Serializable {
 		this.height = height;
 		this.shapeColor = color;
 		this.borderColor = color;
+		this.borderWidth = new BasicStroke(1);
 	}
 
 	public double getX() {
@@ -69,7 +73,6 @@ public abstract class Shape implements Serializable {
 		this.shapeColor = colorShape;
 	}
 
-	
 	public Color getBorderColor() {
 		return borderColor;
 	}
@@ -85,6 +88,14 @@ public abstract class Shape implements Serializable {
 	public boolean intersects(Shape shape) {
 		return new Rectangle2D.Double(getX(), getY(), getWidth(), getHeight()).intersects(shape.getX(), shape.getY(),
 				shape.getWidth(), shape.getHeight());
+	}
+
+	public Stroke getBorderWidth() {
+		return borderWidth;
+	}
+
+	public void setBorderWidth(float borderWidth) {
+		this.borderWidth = new BasicStroke(borderWidth);
 	}
 
 	public abstract void paint(Graphics2D g2);

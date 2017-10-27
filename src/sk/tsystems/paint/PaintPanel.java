@@ -40,8 +40,10 @@ public class PaintPanel extends JPanel {
 	private Rectangle2D.Double selectRectangle;
 	private Rectangle2D.Double resizableRectangle;
 	private boolean resizableMode;
+	private float strokeBorderWidth;
 
 	public PaintPanel() {
+		strokeBorderWidth = 1;
 		shapesList = new ArrayList<>();
 		chosenFillColor = Color.BLACK;
 		chosenBorderColor = Color.BLUE;
@@ -86,6 +88,7 @@ public class PaintPanel extends JPanel {
 						currentShape = new EllipseShape(initialPoint.getX(), initialPoint.getY(), width, height,
 								chosenFillColor, chosenBorderColor);
 					}
+					currentShape.setBorderWidth(strokeBorderWidth);
 					addToShapesList(currentShape);
 					currentShape = null;
 				}
@@ -156,9 +159,6 @@ public class PaintPanel extends JPanel {
 						choosenShape.setWidth(width);
 						choosenShape.setHeight(height);
 						currentShape = choosenShape;
-						// currentShape = ((choosenShape)new Shape(initialPoint.getX(),
-						// initialPoint.getY(), width, height,
-						// chosenColor));
 					}
 				} else {
 					if (resizableMode) {
@@ -246,8 +246,8 @@ public class PaintPanel extends JPanel {
 
 	private void initShapes() {
 		addToShapesList(new RectangleShape(15, 20, 350, 49, Color.blue, Color.cyan));
-		addToShapesList(new RectangleShape(66, 180, 350, 49, Color.pink, Color.cyan));
-		addToShapesList(new EllipseShape(88, 380, 30, 49, Color.green, Color.cyan));
+		addToShapesList(new RectangleShape(66, 180, 350, 49, Color.pink, Color.ORANGE));
+		addToShapesList(new EllipseShape(88, 380, 30, 49, Color.green, Color.black));
 		addToShapesList(new SquareShape(78, 55, 60, 60, Color.black, Color.cyan));
 		addToShapesList(new CircleShape(168, 33, 30, 49, Color.darkGray, Color.cyan));
 	}
@@ -263,6 +263,7 @@ public class PaintPanel extends JPanel {
 	public void setChoosenColor(Color choosenColor) {
 		this.chosenFillColor = choosenColor;
 	}
+
 	public void setChoosenBorderColor(Color choosenColor) {
 		this.chosenBorderColor = choosenColor;
 	}
@@ -274,4 +275,9 @@ public class PaintPanel extends JPanel {
 	public void setShapesList(List<Shape> shapesList) {
 		this.shapesList = shapesList;
 	}
+
+	public void setBorderWidth(float strokeBorderWidth) {
+		this.strokeBorderWidth = strokeBorderWidth;
+	}
+
 }

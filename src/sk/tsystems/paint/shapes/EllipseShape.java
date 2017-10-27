@@ -11,7 +11,7 @@ public class EllipseShape extends Shape2D {
 
 	public EllipseShape(double x, double y, double width, double height, Color color, Color borderColor) {
 		super(x, y, width, height, color, borderColor);
-
+		setBorderColor(borderColor);
 	}
 
 	public EllipseShape() {

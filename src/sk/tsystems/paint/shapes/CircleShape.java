@@ -10,7 +10,7 @@ public class CircleShape extends Shape2D {
 
 	public CircleShape(double x, double y, double width, double height, Color color, Color borderColor) {
 		super(x, y, width, height, color, borderColor);
-
+		setBorderColor(borderColor);
 	}
 
 	public CircleShape() {

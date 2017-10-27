@@ -11,7 +11,7 @@ public class SquareShape extends Shape2D {
 
 	public SquareShape(double x, double y, double width, double height, Color color, Color borderColor) {
 		super(x, y, width, height, color, borderColor);
-		
+		setBorderColor(borderColor);
 	}
 	public SquareShape() {
 		super(0, 0, 0, 0, null,null);

@@ -30,6 +30,7 @@ public abstract class Shape2D extends Shape {
 		g2.setColor(getShapeColor());
 		g2.fill(shape);
 		g2.setColor(getBorderColor());
+		g2.setStroke(getBorderWidth());
 		g2.draw(shape);
 	}
 
