@@ -2,6 +2,7 @@ package sk.tsystems.paint;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
@@ -10,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -40,6 +42,7 @@ import sk.tsystems.utils.CustomMenuListener;
 import sk.tsystems.utils.FileUtils;
 import sk.tsystems.utils.JFontChooser;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 
 public class MainFrame extends JFrame {
 
@@ -149,8 +152,10 @@ public class MainFrame extends JFrame {
 		panel_7.add(btnFotn);
 
 		JButton rotate_btn = new JButton("Rotate");
-		rotate_btn.setEnabled(false);
 		panel_7.add(rotate_btn);
+		
+		JButton btnSize = new JButton("Size");
+		panel_7.add(btnSize);
 
 		JPanel panel_5 = new JPanel();
 		menu_panel.add(panel_5);
@@ -212,7 +217,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		rotate_btn.addActionListener(new ActionListener() {
+		/*rotate_btn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -220,7 +225,7 @@ public class MainFrame extends JFrame {
 				//menu.show(component, 0, component.getHeight());
 			}
 		});
-
+*/
 		JPanel panel_4 = new JPanel();
 		panel_3.add(panel_4);
 		panel_4.setLayout(new GridLayout(3, 10, 0, 0));
@@ -377,7 +382,82 @@ public class MainFrame extends JFrame {
 		color_group.add(radioButton_29);
 		
 		JPopupMenu menu = new JPopupMenu();
-		navigation_panel.add(menu, BorderLayout.NORTH);
+		
+		JMenuItem item = new JMenuItem("Rotate left");
+		menu.add(item);
+		
+		item = new JMenuItem("Rotate right");
+		menu.add(item);
+		
+		JSeparator separator = new JSeparator();
+		menu.add(separator);
+		
+		item = new JMenuItem("Rotate up");
+		menu.add(item);
+		
+		item = new JMenuItem("Rotate down");
+		menu.add(item);
+		
+		rotate_btn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComponent component = (JComponent) e.getSource();
+				menu.show(component, 0, component.getHeight());
+			}
+		});
+		
+		JPopupMenu menu2 = new JPopupMenu();
+		
+		item = new JMenuItem("1");
+		item.addActionListener(menuListener);
+		menu2.add(item);
+		
+		item = new JMenuItem("2");
+		item.addActionListener(menuListener);
+		menu2.add(item);
+		
+		separator = new JSeparator();
+		menu2.add(separator);
+	
+		item = new JMenuItem("3");
+		item.addActionListener(menuListener);
+		menu2.add(item);
+		
+		item = new JMenuItem("4");
+		item.addActionListener(menuListener);
+		menu2.add(item);
+		
+		item = new JMenuItem("5");
+		item.addActionListener(menuListener);
+		menu2.add(item);
+				
+		
+		
+		btnSize.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComponent component = (JComponent) e.getSource();
+				menu2.show(component, 0, component.getHeight());
+			}
+		});
+		
+		Component[] itemsArray = menu2.getComponents();
+		for (int i = 0; i < itemsArray.length; i++) {
+			Component sizeItem = itemsArray[i];
+			sizeItem.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					String width = ((JMenuItem) sizeItem).getText();
+					paintPanel.setBorderWidth(Float.valueOf(width));
+					System.out.println(">>>>>>>>>>>>>>" + Float.valueOf(width));
+				}
+			});
+		}
+		
+		
 
 		edit_bttn.addMouseListener(new MouseAdapter() {
 
@@ -509,5 +589,10 @@ public class MainFrame extends JFrame {
 	public void choseFont() {
 		JFontChooser jfc = new JFontChooser();
 		jfc.showDialog(this);
+	}
+
+	public void setWidth(int i) {
+		paintPanel.setBorderWidth((float)i);
+		System.out.println(">>>>>>" + i);
 	}
 }
