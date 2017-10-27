@@ -401,7 +401,7 @@ public class MainFrame extends JFrame {
 	public void saveFile() {
 		JFileChooser chooser = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-		        "JPG & GIF Images", "jpg", "gif");
+		        "Enter filename");
 	    chooser.setFileFilter(filter);
 	    int returnVal = chooser.showOpenDialog(this);
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {

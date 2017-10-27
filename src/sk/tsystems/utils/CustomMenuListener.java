@@ -20,7 +20,7 @@ public class CustomMenuListener implements ActionListener{
 		if(e.getActionCommand().equalsIgnoreCase("Load")){
 			parentWindow.openFile();			
 		}else if(e.getActionCommand().equalsIgnoreCase("Save")){
-			parentWindow.openFile();
+			parentWindow.saveFile();
 		}
 	}
 			
