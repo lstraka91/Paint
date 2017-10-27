@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import sk.tsystems.paint.shapes.CircleShape;
 import sk.tsystems.paint.shapes.EllipseShape;
 import sk.tsystems.paint.shapes.LineShape;
 import sk.tsystems.paint.shapes.RectangleShape;
@@ -36,6 +38,7 @@ public class PaintPanel extends JPanel {
 	private Shape selectedShape;
 	private Rectangle2D.Double selectRectangle;
 	private Rectangle2D.Double resizableRectangle;
+	private boolean resizableMode;
 
 	public PaintPanel() {
 		shapesList = new ArrayList<>();
@@ -43,9 +46,10 @@ public class PaintPanel extends JPanel {
 		choosenShape = new RectangleShape();
 		drawing = false;
 		isEditMode = true;
+		resizableMode = false;
 		//// current Shape change dynamically
 		initShapes();
-		addMouseListener(new MouseListener() {
+		addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -93,7 +97,11 @@ public class PaintPanel extends JPanel {
 						resizableRectangle = new Rectangle2D.Double(shape.getX() + shape.getWidth() - RESIZABLE_SQUARE,
 								shape.getY() + shape.getHeight() - RESIZABLE_SQUARE, RESIZABLE_SQUARE,
 								RESIZABLE_SQUARE);
+						resizableMode = false;
 						if (resizableRectangle.contains(e.getPoint())) {
+							System.out.println("som na resizable");
+							resizableMode = true;
+							selectedShape = shape;
 							repaint();
 						}
 						if (selectRectangle.contains(e.getPoint())) {
@@ -108,34 +116,13 @@ public class PaintPanel extends JPanel {
 					selectRectangle = null;
 
 				}
-				// TODO Auto-generated method stub
-
 			}
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
 		});
 		addMouseMotionListener(new MouseMotionListener() {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
@@ -146,8 +133,6 @@ public class PaintPanel extends JPanel {
 						currentShape = new LineShape(initialPoint.getX(), initialPoint.getY(), e.getX(), e.getY(),
 								chosenColor);
 					} else {
-						// Point end = changeInitialPoint((int) initialPoint.getX(), (int)
-						// initialPoint.getY(), e.getX(), e.getY());
 						double width = e.getX() - initialPoint.getX();
 						double height = e.getY() - initialPoint.getY();
 						if (width < 0)
@@ -158,18 +143,28 @@ public class PaintPanel extends JPanel {
 								chosenColor);
 					}
 				} else {
-					if (selectRectangle != null) {
+					if (resizableMode) {
+						resizableShape(e.getPoint());
+					}
+
+					else if (selectRectangle != null) {
 						moveShapeTo(e.getPoint());
-//						int dx = (int) (e.getX() - initialPoint.getX());
-//						int dy = (int) (e.getY() - initialPoint.getY());
-//						selectRectangle.setRect(selectRectangle.getX() + dx, selectRectangle.getY() + dy,
-//								selectRectangle.getWidth(), selectRectangle.getHeight());
-//						initialPoint.setLocation(e.getX(), e.getY());
-//						selectedShape.setPosition(selectedShape.getX() + dx, selectedShape.getY() + dy);
-						repaint();
 					}
 				}
 				repaint();
+			}
+
+			private void resizableShape(Point point) {
+				int dx = (int) (point.getX() - initialPoint.getX());
+				int dy = (int) (point.getY() - initialPoint.getY());
+				selectRectangle.setRect(selectRectangle.getX(), selectRectangle.getY(), selectRectangle.getWidth() + dx,
+						selectRectangle.getHeight() + dy);
+				initialPoint.setLocation(point.getX(), point.getY());
+				selectedShape.setWidth(selectedShape.getWidth() + dx);
+				selectedShape.setHeight(selectedShape.getHeight() + dy);
+				resizableRectangle.setRect(resizableRectangle.getX() + dx, resizableRectangle.getY() + dy,
+						RESIZABLE_SQUARE, RESIZABLE_SQUARE);
+
 			}
 
 			private void moveShapeTo(Point point) {
@@ -179,7 +174,8 @@ public class PaintPanel extends JPanel {
 						selectRectangle.getWidth(), selectRectangle.getHeight());
 				initialPoint.setLocation(point.getX(), point.getY());
 				selectedShape.setPosition(selectedShape.getX() + dx, selectedShape.getY() + dy);
-				resizableRectangle.setRect(resizableRectangle.getX()+dx, resizableRectangle.getY()+dy, RESIZABLE_SQUARE, RESIZABLE_SQUARE);
+				resizableRectangle.setRect(resizableRectangle.getX() + dx, resizableRectangle.getY() + dy,
+						RESIZABLE_SQUARE, RESIZABLE_SQUARE);
 			}
 		});
 	}
@@ -207,10 +203,9 @@ public class PaintPanel extends JPanel {
 				currentShape.paint(g2);
 				g2.setTransform(at);
 			}
-			// currentShape.paint(g2);
 		}
 
-		for (int i = 0; i < shapesList.size(); i++) {
+		for (int i = shapesList.size()-1; i>= 0; i--) {
 			Shape shape = shapesList.get(i);
 			if (shape instanceof LineShape) {
 				shape.paint(g2);
@@ -222,7 +217,6 @@ public class PaintPanel extends JPanel {
 				g2.setTransform(at);
 			}
 		}
-		System.out.println(selectedShape);
 		if (selectedShape != null) {
 			g2.setColor(Color.RED);
 			g2.draw(selectRectangle);
@@ -235,6 +229,8 @@ public class PaintPanel extends JPanel {
 		addToShapesList(new RectangleShape(15, 20, 350, 49, Color.blue));
 		addToShapesList(new RectangleShape(66, 180, 350, 49, Color.pink));
 		addToShapesList(new EllipseShape(88, 380, 30, 49, Color.green));
+		addToShapesList(new SquareShape(78, 55, 60, 60, Color.black));
+		addToShapesList(new CircleShape(168, 33, 30, 49, Color.darkGray));
 	}
 
 	public void setEditMode(boolean isEditMode) {

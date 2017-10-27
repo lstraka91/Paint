@@ -8,11 +8,9 @@ import sk.tsystems.paint.Shape;
 
 public class RectangleShape extends Shape {
 
-	java.awt.Shape shape;
-
 	public RectangleShape(double x, double y, double width, double height, Color color) {
 		super(x, y, width, height, color);
-		shape = new Rectangle2D.Double(0, 0, width, height);
+		
 	}
 
 	public RectangleShape() {
@@ -27,8 +25,7 @@ public class RectangleShape extends Shape {
 	@Override
 	public void paint(Graphics2D g2) {
 		g2.setColor(getColorShape());
+		Rectangle2D.Double shape = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
 		g2.fill(shape);
-
 	}
-
 }

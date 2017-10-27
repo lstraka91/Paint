@@ -12,7 +12,9 @@ public class SquareShape extends Shape {
 
 	public SquareShape(double x, double y, double width, double height, Color color) {
 		super(x, y, width, height, color);
-		shape = new Rectangle2D.Double(0, 0, width, width);
+		
+	}
+	public SquareShape() {
 	}
 
 	@Override
@@ -20,10 +22,15 @@ public class SquareShape extends Shape {
 		// TODO Auto-generated method stub
 
 	}
-
+@Override
+public double getHeight() {
+	return getWidth();
+}
 	@Override
 	public void paint(Graphics2D g2) {
 		g2.setColor(getColorShape());
+		shape = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
+		setHeight(getWidth());
 		g2.fill(shape);
 
 	}

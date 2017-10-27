@@ -11,7 +11,9 @@ public class EllipseShape extends Shape {
 
 	public EllipseShape(double x, double y, double width, double height, Color color) {
 		super(x, y, width, height, color);
-		shape = new Ellipse2D.Double(0, 0, width, height);
+		
+	}
+	public EllipseShape() {
 	}
 
 	@Override
@@ -23,6 +25,7 @@ public class EllipseShape extends Shape {
 	@Override
 	public void paint(Graphics2D g2) {
 		g2.setColor(getColorShape());
+		shape = new Ellipse2D.Double(0, 0, getWidth(), getHeight());
 		g2.fill(shape);
 
 	}
