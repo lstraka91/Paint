@@ -412,9 +412,9 @@ public class MainFrame extends JFrame {
 	    chooser.setFileFilter(filter);
 	    int returnVal = chooser.showSaveDialog(this);
 	    if(returnVal == JFileChooser.APPROVE_OPTION) {
-	       System.out.println("You chose to open this file: " +
-	            chooser.getSelectedFile().getName());
-	       int result=FileUtils.savePainting(((PaintPanel)paintPanel).getShapesList(), new File(chooser.getSelectedFile().getName()));
+	       System.out.println("You chose to save this file: " +
+	            chooser.getSelectedFile());
+	       int result=FileUtils.savePainting(((PaintPanel)paintPanel).getShapesList(), chooser.getSelectedFile());
 	       
 	    }
 	}
