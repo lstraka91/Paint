@@ -13,6 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import sk.tsystems.paint.shapes.CircleShape;
+import sk.tsystems.paint.shapes.EllipseShape;
+import sk.tsystems.paint.shapes.LineShape;
+import sk.tsystems.paint.shapes.RectangleShape;
+import sk.tsystems.paint.shapes.SquareShape;
 import sk.tsystems.utils.CustomMenuListener;
 import sk.tsystems.utils.FileUtils;
 
@@ -26,6 +31,8 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
+
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -34,7 +41,11 @@ import javax.swing.JInternalFrame;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Component;
@@ -49,7 +60,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem menuLoad;
 	private JMenuItem menuExit;
 	private JScrollPane scrollPane;
-	private JPanel paintPanel;
+	private PaintPanel paintPanel;
 	private ButtonGroup color_group;
 	private ButtonGroup shape_group;
 	private ButtonGroup color_type_group;
@@ -96,8 +107,8 @@ public class MainFrame extends JFrame {
 
 		JMenu fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
-		
-		CustomMenuListener menuListener=new CustomMenuListener(this);
+
+		CustomMenuListener menuListener = new CustomMenuListener(this);
 		menuSave = new JMenuItem("Save");
 		menuSave.addActionListener(menuListener);
 		fileMenu.add(menuSave);
@@ -196,7 +207,25 @@ public class MainFrame extends JFrame {
 		shape_radioButton_4.setBackground(SystemColor.menu);
 		panel_5.add(shape_radioButton_4);
 		shape_group.add(shape_radioButton_4);
-		
+
+		for (Enumeration<AbstractButton> buttons = shape_group.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+
+			button.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					JRadioButton newSelected = ((JRadioButton) e.getComponent());
+					// newSelected.setSelected(true);
+					Shape newShape = identifyShape(newSelected);
+					paintPanel.setChoosenShape(newShape);
+					System.out.println(">>>>>>>>>> new shape: " + newShape.getClass().toString());
+
+				}
+
+			});
+		}
+
 		JPanel panel_3 = new JPanel();
 		home_tab.add(panel_3);
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
@@ -206,26 +235,28 @@ public class MainFrame extends JFrame {
 		panel_6.setLayout(new GridLayout(2, 1, 0, 0));
 		
 		color_type_group = new ButtonGroup();
-		
-		JRadioButton fill_rbtn = new JRadioButton("Fill color");
-		panel_6.add(fill_rbtn);
-		color_type_group.add(fill_rbtn);
-		
-		JRadioButton border_rbtn = new JRadioButton("Border color");
-		panel_6.add(border_rbtn);
-		color_type_group.add(border_rbtn);
-		
+
+		JRadioButton fill__radioButton = new JRadioButton("Fill color");
+		fill__radioButton.setSelected(true);
+		panel_6.add(fill__radioButton);
+		color_type_group.add(fill__radioButton);
+
+		JRadioButton border__radioButton = new JRadioButton("Border color");
+		panel_6.add(border__radioButton);
+		color_type_group.add(border__radioButton);
+
 		JPanel panel_4 = new JPanel();
 		panel_3.add(panel_4);
 		panel_4.setLayout(new GridLayout(3, 10, 0, 0));
 		
 		color_group = new ButtonGroup();
-		
-		JRadioButton radioButton = new JRadioButton("");
-		radioButton.setBackground(Color.BLACK);
-		panel_4.add(radioButton);
-		color_group.add(radioButton);
-		
+
+		JRadioButton radioButton_0 = new JRadioButton("");
+		radioButton_0.setSelected(true);
+		radioButton_0.setBackground(Color.BLACK);
+		panel_4.add(radioButton_0);
+		color_group.add(radioButton_0);
+
 		JRadioButton radioButton_1 = new JRadioButton("");
 		radioButton_1.setBackground(Color.GRAY);
 		panel_4.add(radioButton_1);
@@ -370,7 +401,22 @@ public class MainFrame extends JFrame {
 		radioButton_29.setBackground(SystemColor.menu);
 		panel_4.add(radioButton_29);
 		color_group.add(radioButton_29);
-		
+
+		for (Enumeration<AbstractButton> buttons = color_group.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+
+			button.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					JRadioButton newSelected = ((JRadioButton) e.getComponent());
+					// newSelected.setSelected(true);
+					paintPanel.setChoosenColor(newSelected.getBackground());
+					System.out.println("Color choosen: " + newSelected.getBackground().toString());
+				}
+			});
+		}
+
 		JLabel edit_colors_lbl = new JLabel("Edit colors");
 		panel_3.add(edit_colors_lbl);
 		
@@ -382,6 +428,24 @@ public class MainFrame extends JFrame {
 		
 		paintPanel = new PaintPanel();
 		scrollPane.setViewportView(paintPanel);
+
+	}
+
+	private Shape identifyShape(JRadioButton newSelected) {
+		switch (newSelected.getText()) {
+		case "Line":
+			return new LineShape();
+		case "Circle":
+			return new CircleShape();
+		case "Ellipse":
+			return new EllipseShape();
+		case "Square":
+			return new SquareShape();
+		case "Rectangle":
+			return new RectangleShape();
+		default:
+			return null;
+		}
 
 	}
 
