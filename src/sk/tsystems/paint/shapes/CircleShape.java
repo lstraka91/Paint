@@ -1,26 +1,20 @@
 package sk.tsystems.paint.shapes;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import sk.tsystems.paint.Shape;
+import sk.tsystems.paint.Shape2D;
 
-public class CircleShape extends Shape {
-	java.awt.Shape shape;
+public class CircleShape extends Shape2D {
 
-	public CircleShape(double x, double y, double width, double height, Color color) {
-		super(x, y, width, height, color);
+	public CircleShape(double x, double y, double width, double height, Color color, Color borderColor) {
+		super(x, y, width, height, color, borderColor);
 
 	}
 
 	public CircleShape() {
-	}
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
+		super(0, 0, 0, 0, null, null);
 	}
 
 	@Override
@@ -29,12 +23,9 @@ public class CircleShape extends Shape {
 	}
 
 	@Override
-	public void paint(Graphics2D g2) {
-		g2.setColor(getColorShape());
-		shape = new Ellipse2D.Double(0, 0, getWidth(), getHeight());
-		setHeight(getWidth());
-		g2.fill(shape);
+	public Shape getShape() {
 
+		return new Ellipse2D.Double(0, 0, getWidth(), getHeight());
 	}
 
 }

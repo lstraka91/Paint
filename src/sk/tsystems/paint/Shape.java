@@ -6,7 +6,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
-public abstract class Shape implements Serializable{
+public abstract class Shape implements Serializable {
 	/**
 	 * 
 	 */
@@ -14,7 +14,8 @@ public abstract class Shape implements Serializable{
 	private Point2D.Double position;
 	private double width;
 	private double height;
-	private Color colorShape;
+	private Color shapeColor;
+	private Color borderColor;
 
 	public Shape() {
 
@@ -24,7 +25,8 @@ public abstract class Shape implements Serializable{
 		position = new Point2D.Double(x, y);
 		this.width = width;
 		this.height = height;
-		this.colorShape = color;
+		this.shapeColor = color;
+		this.borderColor = color;
 	}
 
 	public double getX() {
@@ -59,12 +61,21 @@ public abstract class Shape implements Serializable{
 		this.height = height;
 	}
 
-	public Color getColorShape() {
-		return colorShape;
+	public Color getShapeColor() {
+		return shapeColor;
 	}
 
-	public void setColorShape(Color colorShape) {
-		this.colorShape = colorShape;
+	public void setShapeColor(Color colorShape) {
+		this.shapeColor = colorShape;
+	}
+
+	
+	public Color getBorderColor() {
+		return borderColor;
+	}
+
+	public void setBorderColor(Color borderColor) {
+		this.borderColor = borderColor;
 	}
 
 	public void setPosition(Point2D.Double position) {
@@ -75,8 +86,6 @@ public abstract class Shape implements Serializable{
 		return new Rectangle2D.Double(getX(), getY(), getWidth(), getHeight()).intersects(shape.getX(), shape.getY(),
 				shape.getWidth(), shape.getHeight());
 	}
-
-	public abstract void update();
 
 	public abstract void paint(Graphics2D g2);
 }

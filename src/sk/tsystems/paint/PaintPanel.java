@@ -28,7 +28,8 @@ public class PaintPanel extends JPanel {
 	private final int RESIZABLE_SQUARE = 5;
 	private Shape currentShape;
 	private Shape choosenShape;
-	private Color chosenColor;
+	private Color chosenFillColor;
+	private Color chosenBorderColor;
 	private List<Shape> shapesList;
 
 	private Point initialPoint;
@@ -42,11 +43,13 @@ public class PaintPanel extends JPanel {
 
 	public PaintPanel() {
 		shapesList = new ArrayList<>();
-		chosenColor = Color.BLACK;
-		choosenShape = new RectangleShape();
+		chosenFillColor = Color.BLACK;
+		chosenBorderColor = Color.BLUE;
+		choosenShape = new LineShape();
 		drawing = false;
 		isEditMode = true;
 		resizableMode = false;
+
 		//// current Shape change dynamically
 		initShapes();
 		addMouseListener(new MouseAdapter() {
@@ -67,16 +70,24 @@ public class PaintPanel extends JPanel {
 
 					if (choosenShape instanceof LineShape) {
 						currentShape = new LineShape(initialPoint.getX(), initialPoint.getY(), e.getX(), e.getY(),
-								chosenColor);
-					} else {
-
+								chosenFillColor);
+					} else if (choosenShape instanceof SquareShape) {
 						currentShape = new SquareShape(initialPoint.getX(), initialPoint.getY(), width, height,
-								chosenColor);
+								chosenFillColor, chosenBorderColor);
+
+					} else if (choosenShape instanceof RectangleShape) {
+						currentShape = new RectangleShape(initialPoint.getX(), initialPoint.getY(), width, height,
+								chosenFillColor, chosenBorderColor);
+
+					} else if (choosenShape instanceof CircleShape) {
+						currentShape = new CircleShape(initialPoint.getX(), initialPoint.getY(), width, height,
+								chosenFillColor, chosenBorderColor);
+					} else if (choosenShape instanceof EllipseShape) {
+						currentShape = new EllipseShape(initialPoint.getX(), initialPoint.getY(), width, height,
+								chosenFillColor, chosenBorderColor);
 					}
-
 					addToShapesList(currentShape);
-				} else {
-
+					currentShape = null;
 				}
 
 				repaint();
@@ -90,7 +101,7 @@ public class PaintPanel extends JPanel {
 					drawing = true;
 					System.out.println("pressed " + initialPoint);
 				} else {
-					for (int i = 0; i < shapesList.size(); i++) {
+					for (int i = shapesList.size() - 1; i >= 0; i--) {
 						Shape shape = shapesList.get(i);
 						selectRectangle = new Rectangle2D.Double(shape.getX(), shape.getY(), shape.getWidth(),
 								shape.getHeight());
@@ -131,7 +142,7 @@ public class PaintPanel extends JPanel {
 				if (!isEditMode) {
 					if (choosenShape instanceof LineShape) {
 						currentShape = new LineShape(initialPoint.getX(), initialPoint.getY(), e.getX(), e.getY(),
-								chosenColor);
+								chosenFillColor);
 					} else {
 						double width = e.getX() - initialPoint.getX();
 						double height = e.getY() - initialPoint.getY();
@@ -139,8 +150,15 @@ public class PaintPanel extends JPanel {
 							width *= -1;
 						if (height < 0)
 							height *= -1;
-						currentShape = new SquareShape(initialPoint.getX(), initialPoint.getY(), width, height,
-								chosenColor);
+
+						choosenShape.setShapeColor(chosenFillColor);
+						choosenShape.setPosition(initialPoint.getX(), initialPoint.getY());
+						choosenShape.setWidth(width);
+						choosenShape.setHeight(height);
+						currentShape = choosenShape;
+						// currentShape = ((choosenShape)new Shape(initialPoint.getX(),
+						// initialPoint.getY(), width, height,
+						// chosenColor));
 					}
 				} else {
 					if (resizableMode) {
@@ -193,27 +211,28 @@ public class PaintPanel extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(Color.white);
 		g2.fillRect(0, 0, getWidth(), getHeight());
-		if (drawing) {
-			if (currentShape instanceof LineShape) {
-				currentShape.paint(g2);
-			} else {
 
-				AffineTransform at = g2.getTransform();
-				g2.translate(currentShape.getX(), currentShape.getY());
-				currentShape.paint(g2);
-				g2.setTransform(at);
-			}
-		}
-
-		for (int i = shapesList.size()-1; i>= 0; i--) {
+		for (int i = 0; i < shapesList.size(); i++) {
 			Shape shape = shapesList.get(i);
 			if (shape instanceof LineShape) {
 				shape.paint(g2);
+
 			} else {
 
 				AffineTransform at = g2.getTransform();
 				g2.translate(shape.getX(), shape.getY());
 				shape.paint(g2);
+				g2.setTransform(at);
+
+			}
+		}
+		if (drawing) {
+			if (currentShape instanceof LineShape) {
+				currentShape.paint(g2);
+			} else {
+				AffineTransform at = g2.getTransform();
+				g2.translate(currentShape.getX(), currentShape.getY());
+				currentShape.paint(g2);
 				g2.setTransform(at);
 			}
 		}
@@ -226,11 +245,11 @@ public class PaintPanel extends JPanel {
 	}
 
 	private void initShapes() {
-		addToShapesList(new RectangleShape(15, 20, 350, 49, Color.blue));
-		addToShapesList(new RectangleShape(66, 180, 350, 49, Color.pink));
-		addToShapesList(new EllipseShape(88, 380, 30, 49, Color.green));
-		addToShapesList(new SquareShape(78, 55, 60, 60, Color.black));
-		addToShapesList(new CircleShape(168, 33, 30, 49, Color.darkGray));
+		addToShapesList(new RectangleShape(15, 20, 350, 49, Color.blue, Color.cyan));
+		addToShapesList(new RectangleShape(66, 180, 350, 49, Color.pink, Color.cyan));
+		addToShapesList(new EllipseShape(88, 380, 30, 49, Color.green, Color.cyan));
+		addToShapesList(new SquareShape(78, 55, 60, 60, Color.black, Color.cyan));
+		addToShapesList(new CircleShape(168, 33, 30, 49, Color.darkGray, Color.cyan));
 	}
 
 	public void setEditMode(boolean isEditMode) {
@@ -242,7 +261,10 @@ public class PaintPanel extends JPanel {
 	}
 
 	public void setChoosenColor(Color choosenColor) {
-		this.chosenColor = choosenColor;
+		this.chosenFillColor = choosenColor;
+	}
+	public void setChoosenBorderColor(Color choosenColor) {
+		this.chosenBorderColor = choosenColor;
 	}
 
 	public List<Shape> getShapesList() {

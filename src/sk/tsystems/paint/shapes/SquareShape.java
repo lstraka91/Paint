@@ -5,34 +5,28 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import sk.tsystems.paint.Shape;
+import sk.tsystems.paint.Shape2D;
 
-public class SquareShape extends Shape {
+public class SquareShape extends Shape2D {
 
-	java.awt.Shape shape;
-
-	public SquareShape(double x, double y, double width, double height, Color color) {
-		super(x, y, width, height, color);
+	public SquareShape(double x, double y, double width, double height, Color color, Color borderColor) {
+		super(x, y, width, height, color, borderColor);
 		
 	}
 	public SquareShape() {
+		super(0, 0, 0, 0, null,null);
 	}
 
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
-	}
+	
 @Override
 public double getHeight() {
 	return getWidth();
 }
-	@Override
-	public void paint(Graphics2D g2) {
-		g2.setColor(getColorShape());
-		shape = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
-		setHeight(getWidth());
-		g2.fill(shape);
+@Override
+public java.awt.Shape getShape() {
+	
+		return new Rectangle2D.Double(0, 0, getWidth(), getHeight());
+}
 
-	}
 
 }
