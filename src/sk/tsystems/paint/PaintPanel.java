@@ -280,4 +280,10 @@ public class PaintPanel extends JPanel {
 		this.strokeBorderWidth = strokeBorderWidth;
 	}
 
+	public void clearPanel() {
+		shapesList=new ArrayList<>();
+		repaint();
+		
+	}
+
 }

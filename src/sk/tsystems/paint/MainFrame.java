@@ -163,10 +163,17 @@ public class MainFrame extends JFrame {
 		JButton btnFotn = new JButton("Font");
 		btnFotn.addActionListener(menuListener);
 
-		JButton btnSelect = new JButton("Select");
-		panel_7.add(btnSelect);
-		btnSelect.setEnabled(false);
+		JButton btnClear = new JButton("Clear");
+		panel_7.add(btnClear);
 		panel_7.add(btnFotn);
+		btnClear.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				paintPanel.clearPanel();
+
+			}
+		});
 
 		JButton btnSize = new JButton("Size");
 		panel_7.add(btnSize);
